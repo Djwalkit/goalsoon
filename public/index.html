@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Goal Soon</title>
+<style>
+body{
+font-family:system-ui;
+background:#06140c;
+color:#eaf6ef;
+margin:0;
+padding:20px;
+}
+h1{font-size:20px;margin-bottom:10px}
+.card{
+background:#0d1f15;
+padding:14px;
+border-radius:12px;
+margin-bottom:10px;
+}
+.prob{
+font-size:18px;
+font-weight:700;
+color:#3cff7a;
+}
+</style>
+</head>
+<body>
+
+<h1>Goal Soon — Live Draw Goal Probability</h1>
+
+<div id="list"></div>
+
+<script>
+async function load(){
+ const r = await fetch('/api/ranked');
+ const data = await r.json();
+ const el = document.getElementById("list");
+ el.innerHTML = "";
+
+ data.forEach(m=>{
+   const div = document.createElement("div");
+   div.className="card";
+   div.innerHTML=`
+   <div><b>${m.home}</b> vs <b>${m.away}</b></div>
+   <div>${m.score} • ${m.minute}'</div>
+   <div class="prob">Goal Probability: ${m.probability}%</div>
+   <div>${m.league}</div>
+   `;
+   el.appendChild(div);
+ });
+}
+
+load();
+setInterval(load,15000);
+</script>
+
+</body>
+</html>
